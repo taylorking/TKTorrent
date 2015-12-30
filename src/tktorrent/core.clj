@@ -45,10 +45,10 @@
                   (Thread/sleep 1000)
           ))        
     )
-    (do
-      (println "Please pass a filepath to the program")
-      1
-    )
+  )
+  (do
+    (println "Please pass a filepath to the program")
+    1
   )
 )
 )
