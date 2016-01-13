@@ -45,12 +45,12 @@
               (.add (.getContentPane frame) panel)
               (let [progressBar (JProgressBar.)] 
                 (.add panel progressBar)
-                (.setMaximum progressBar 100)
+                (.setMaximum progressBar (Math/pow 10 9))
                 (.setMinimum progressBar 0) 
                 (.setVisible frame true)
                 (while (not= (.toString (.getState client)) "DONE") (do
                            (def status (.toString (.getState client)))
-                           (def complete (.getCompletion torrent))
+                           (def complete (* (.getCompletion torrent) (Math/pow 10 6)))
                            (.setValue progressBar complete)
                            (println (join [status " " (join [complete "%"])]))     
                            (Thread/sleep 1000)
