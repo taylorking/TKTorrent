@@ -2,7 +2,7 @@
            (java.io FileReader File)
             (java.net InetAddress)
             (java.lang Thread)
-            (javax.swing JFrame JPanel)
+            (javax.swing JFrame JPanel JProgressBar)
             (com.turn.ttorrent.client Client SharedTorrent)
             (com.turn.ttorrent.tracker Tracker)
             (com.turn.ttorrent.common Torrent)
@@ -38,17 +38,31 @@
             ;just hang out waiting for the torrent to start                                       
           ))
           (println "torrent successfully initialized.")
-          (while (not= (.toString (.getState client)) "DONE") (do
-                  (def status (.toString (.getState client)))
-                  (def complete (.getCompletion torrent))
-                  (println (join [status " " (join [complete "%"])]))     
-                  (Thread/sleep 1000)
-          ))        
+
+          (let [frame (JFrame.)]
+            (.setSize frame 300 200)
+            (let [panel (JPanel.)] 
+              (.add (.getContentPane frame) panel)
+              (let [progressBar (JProgressBar.)] 
+                (.add panel progressBar)
+                (.setMaximum progressBar 100)
+                (.setMinimum progressBar 0) 
+                (.setVisible frame true)
+                (while (not= (.toString (.getState client)) "DONE") (do
+                           (def status (.toString (.getState client)))
+                           (def complete (.getCompletion torrent))
+                           (.setValue progressBar complete)
+                           (println (join [status " " (join [complete "%"])]))     
+                           (Thread/sleep 1000)
+                    ))          
+              )
+            )
+          )
+      )
+    )
+    (do
+      (println "Please pass a filepath to the program")
+        1
     )
   )
-  (do
-    (println "Please pass a filepath to the program")
-    1
-  )
-)
 )
